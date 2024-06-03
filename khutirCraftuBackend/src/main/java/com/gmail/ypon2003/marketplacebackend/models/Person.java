@@ -2,6 +2,9 @@ package com.gmail.ypon2003.marketplacebackend.models;
 
 import jakarta.persistence.*;
 import jakarta.validation.constraints.Email;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Pattern;
+import jakarta.validation.constraints.Size;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -19,19 +22,25 @@ public class Person {
     private Long person_id;
 
     @Column(name = "person_name")
+    @Size(min = 1, max = 50)
     private String name;
 
     @Column(name = "person_last_name")
+    @Size(min = 1, max = 50)
     private String lastName;
 
     @Column(name = "person_email")
     @Email
+    @NotNull
     private String email;
 
     @Column(name = "person_phone_number")
+    @Pattern(regexp = "\\d{10,15}")
     private String phoneNumber;
 
     @Column(name = "person_password")
+    @NotNull
+    @Size(min = 6, max = 100)
     private String password;
 
     @Column(name = "person_role")

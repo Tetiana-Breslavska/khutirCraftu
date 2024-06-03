@@ -2,6 +2,7 @@ package com.gmail.ypon2003.marketplacebackend.controllers;
 
 import com.gmail.ypon2003.marketplacebackend.models.Ad;
 import com.gmail.ypon2003.marketplacebackend.services.AdService;
+import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -36,7 +37,7 @@ public class AdController {
     }
 
     @PostMapping("/ad")
-    public Ad addAd(@RequestBody Ad ad) {
+    public Ad addAd(@Valid @RequestBody Ad ad) {
         ad.setName(ad.getName());
         ad.setPrice(ad.getPrice());
         ad.setInfoSeller(ad.getInfoSeller());
@@ -47,12 +48,12 @@ public class AdController {
     }
 
     @PutMapping("ad/{id}")
-    public void updateAd(@PathVariable("id") long id, @RequestBody Ad ad) {
+    public void updateAd(@PathVariable("id") Long id, @RequestBody Ad ad) {
         adService.updateAd(id, ad);
     }
 
     @DeleteMapping("ad/{id}")
-    public void deleteAd (@PathVariable("id") long id) {
+    public void deleteAd (@PathVariable("id") Long id) {
         adService.deleteAd(id);
     }
 
