@@ -39,7 +39,7 @@ public class Ad {
     @Column(name = "ad_created_at")
     @Temporal(TemporalType.TIMESTAMP)
     @Past
-    private Date createAt;
+    private Date createdAt;
 
     @Column(name = "ad_info_seller")
     private String infoSeller;

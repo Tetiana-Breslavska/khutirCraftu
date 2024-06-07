@@ -34,8 +34,8 @@ public class AdService {
     @Transactional
     public Ad save(Ad ad) {
         try {
-            if(ad.getCreateAt() == null) {
-                ad.setCreateAt(new Date());
+            if(ad.getCreatedAt() == null) {
+                ad.setCreatedAt(new Date());
             }
             log.info("Saving ad: {}", ad);
             adRepository.save(ad);
@@ -49,8 +49,8 @@ public class AdService {
     @Transactional
     public void saveAd(List<Ad> adList) {
         adList.forEach(ad -> {
-            if (ad.getCreateAt() == null) {
-                ad.setCreateAt(new Date());
+            if (ad.getCreatedAt() == null) {
+                ad.setCreatedAt(new Date());
             }
         });
         adRepository.saveAll(adList);
@@ -66,7 +66,7 @@ public class AdService {
         if(updateToBeAd.isPresent()) {
             Ad ad = updateToBeAd.get();
             ad.setName(adUpdate.getName());
-            ad.setCreateAt(adUpdate.getCreateAt());
+            ad.setCreatedAt(adUpdate.getCreatedAt());
             ad.setFlag(adUpdate.isFlag());
             ad.setDescription(adUpdate.getDescription());
             ad.setPrice(adUpdate.getPrice());

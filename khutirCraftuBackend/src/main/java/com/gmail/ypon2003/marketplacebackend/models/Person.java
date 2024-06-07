@@ -47,9 +47,18 @@ public class Person {
     private String role;
 
     @ManyToMany
-    @JoinTable(name = "user_favorite_ads", joinColumns = @JoinColumn(name = "favorite_id"))
+    @JoinTable(name = "user_favorite_ads",
+            joinColumns = @JoinColumn(name = "person_id"),
+    inverseJoinColumns = @JoinColumn(name = "ad_id"))
     private List<Ad> favorites = new ArrayList<>();
 
     public void addToFavorites(Ad ad) {
+        if(!favorites.contains(ad)) {
+            favorites.add(ad);
+        }
+    }
+
+    public void removeFromFavorites(Ad ad) {
+        favorites.remove(ad);
     }
 }

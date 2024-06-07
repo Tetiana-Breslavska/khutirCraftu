@@ -53,6 +53,14 @@ public class PersonService {
         personRepository.save(person);
     }
 
+    @Transactional
+    public void removeFromFavorites(Long personId, Long adId) throws ChangeSetPersister.NotFoundException {
+        Person person = personRepository.findById(personId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        Ad ad = adRepository.findById(adId).orElseThrow(ChangeSetPersister.NotFoundException::new);
+        person.removeFromFavorites(ad);
+        personRepository.save(person);
+    }
+
     public List<Ad> getFavorites(Long personId) throws ChangeSetPersister.NotFoundException {
         Person person = personRepository.findById(personId).orElseThrow(ChangeSetPersister.NotFoundException::new);
         return person.getFavorites();

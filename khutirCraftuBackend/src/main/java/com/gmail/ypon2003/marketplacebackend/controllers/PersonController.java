@@ -77,6 +77,13 @@ public class PersonController {
         return ResponseEntity.ok().build();
     }
 
+    @DeleteMapping("/{personId}/favorites/{adId}")
+    public ResponseEntity<Void> removeFromFavorites(@PathVariable("personId") Long personId,
+                                                    @PathVariable("adId") Long adId) throws ChangeSetPersister.NotFoundException {
+        personService.removeFromFavorites(personId, adId);
+        return ResponseEntity.ok().build();
+    }
+
     @GetMapping("/{personId}/favorites")
     public ResponseEntity<List<Ad>> getFavorites(@PathVariable("personId") Long personId) throws ChangeSetPersister.NotFoundException {
         List<Ad> favorites = personService.getFavorites(personId);
