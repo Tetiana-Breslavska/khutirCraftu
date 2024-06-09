@@ -198,3 +198,10 @@ json
 - `"password": "sellerpassword123"`
 - `}`
 
+Додавання товару до обраних:
+
+`URL: POST /api/person/{personId}/favorites/{adId}`
+
+Видалення товару з обраних:
+
+`URL: DELETE /api/person/{personId}/favorites/{adId} `
