@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/.idea/khutirCraftu.iml" filepath="$PROJECT_DIR$/.idea/khutirCraftu.iml" />
+      <module fileurl="file://$PROJECT_DIR$/khutirCraftuBackend/khutirCraftuBackend.iml" filepath="$PROJECT_DIR$/khutirCraftuBackend/khutirCraftuBackend.iml" />
     </modules>
   </component>
 </project>

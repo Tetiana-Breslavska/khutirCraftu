@@ -10,7 +10,9 @@
       <configuration>
         <setting name="validation-enabled" value="true" />
         <setting name="provider-name" value="Hibernate" />
-        <datasource-mapping />
+        <datasource-mapping>
+          <factory-entry name="khutirCraftu" value="5842bd41-9ba2-49b5-8fa6-dff80f7bca0b" />
+        </datasource-mapping>
         <naming-strategy-map />
       </configuration>
     </facet>

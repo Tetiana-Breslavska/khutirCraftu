@@ -64,7 +64,6 @@
                 <groupId>org.springframework.boot</groupId>
                 <artifactId>spring-boot-maven-plugin</artifactId>
                 <configuration>
-                    <mainClass>khutirCraftuBackend/src/main/java/com/gmail/ypon2003/marketplacebackend/MarketPlaceBackendApplication.java</mainClass>
                     <excludes>
                         <exclude>
                             <groupId>org.project-lombok</groupId>
