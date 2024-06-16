@@ -1,7 +1,10 @@
 package com.gmail.ypon2003.marketplacebackend.controllers;
 
 import com.gmail.ypon2003.marketplacebackend.models.Ad;
-import com.gmail.ypon2003.marketplacebackend.services.AdService;
+import com.gmail.ypon2003.marketplacebackend.services.adService.AdImageService;
+import com.gmail.ypon2003.marketplacebackend.services.adService.AdPaginationService;
+import com.gmail.ypon2003.marketplacebackend.services.adService.AdSearchService;
+import com.gmail.ypon2003.marketplacebackend.services.adService.AdService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -23,11 +26,15 @@ public class AdController {
 
     private static final Logger log = LoggerFactory.getLogger(Ad.class);
     private final AdService adService;
+    private final AdPaginationService paginationService;
+    private final AdImageService adImageService;
+    private final AdSearchService adSearchService;
 
-
-    @Autowired
-    public AdController(AdService adService) {
+    public AdController(AdService adService, AdPaginationService paginationService, AdImageService adImageService, AdSearchService adSearchService) {
         this.adService = adService;
+        this.paginationService = paginationService;
+        this.adImageService = adImageService;
+        this.adSearchService = adSearchService;
     }
 
     @GetMapping("/ad")
@@ -59,7 +66,7 @@ public class AdController {
 
     @GetMapping("/search")
     public ResponseEntity<List<Ad>> searchAdsByName(@RequestParam("name") String name) {
-        List<Ad> ads = adService.searchAdsByName(name);
+        List<Ad> ads = adSearchService.searchAdsByName(name);
         return ResponseEntity.ok(ads);
     }
 
@@ -67,9 +74,9 @@ public class AdController {
     public ResponseEntity<List<Ad>> getAdsSorted(@RequestParam("sortBy") String sortBy) {
         List<Ad> ads;
         if(sortBy.equals("price")) {
-            ads = adService.getAdsSortedByPrice();
+            ads = adSearchService.getAdsSortedByPrice();
         } else {
-            ads = adService.getAdsSortedByDate();
+            ads = adSearchService.getAdsSortedByDate();
         }
         return ResponseEntity.ok(ads);
     }
@@ -78,7 +85,7 @@ public class AdController {
     public ResponseEntity<Page<Ad>> getAds(@RequestParam(value = "page", defaultValue = "0") int page,
                                            @RequestParam(value = "size", defaultValue = "10") int size) {
         Pageable pageable = PageRequest.of(page, size);
-        Page<Ad> adsPage = adService.getAdsPage(pageable);
+        Page<Ad> adsPage = paginationService.getAdsPage(pageable);
         return ResponseEntity.ok(adsPage);
     }
 }

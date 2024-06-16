@@ -1,13 +1,10 @@
-package com.gmail.ypon2003.marketplacebackend.services;
+package com.gmail.ypon2003.marketplacebackend.services.adService;
 
 import com.gmail.ypon2003.marketplacebackend.models.Ad;
 import com.gmail.ypon2003.marketplacebackend.repositories.AdRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.data.domain.Page;
-import org.springframework.data.domain.Pageable;
-import org.springframework.data.domain.Sort;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -78,22 +75,6 @@ public class AdService {
     public void deleteAd(long id) {
         adRepository.deleteById(id);
     }
-    public List<Ad> searchAdsByName(String name) {
-        return adRepository.findByNameContaining(name);
-    }
-
-    public List<Ad> getAdsSortedByPrice() {
-        return adRepository.findAll(Sort.by(Sort.Direction.ASC, "price"));
-    }
-
-    public List<Ad> getAdsSortedByDate() {
-        return adRepository.findAll(Sort.by(Sort.Direction.DESC, "createdAt"));
-    }
-
-    public Page<Ad> getAdsPage(Pageable pageable) {
-        return adRepository.findAll(pageable);
-    }
-
     public List<Ad> findAll() {
         return adRepository.findAll();
     }

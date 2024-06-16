@@ -1,10 +1,7 @@
 package com.gmail.ypon2003.marketplacebackend.models;
 
 import jakarta.persistence.*;
-import jakarta.validation.constraints.Email;
-import jakarta.validation.constraints.NotNull;
-import jakarta.validation.constraints.Pattern;
-import jakarta.validation.constraints.Size;
+import jakarta.validation.constraints.*;
 import lombok.Data;
 
 import java.util.ArrayList;
@@ -18,7 +15,6 @@ import java.util.List;
 public class Person {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "person_id")
     private Long person_id;
 
     @Column(name = "person_name")
@@ -30,12 +26,12 @@ public class Person {
     private String lastName;
 
     @Column(name = "person_email")
-    @Email
-    @NotNull
+    @NotEmpty
+    @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$")
     private String email;
 
     @Column(name = "person_phone_number")
-    @Pattern(regexp = "\\d{10,15}")
+    @Pattern(regexp = "^\\+(\\d{1,14})?[\\d\\s-]{7,14}$")
     private String phoneNumber;
 
     @Column(name = "person_password")
@@ -48,8 +44,8 @@ public class Person {
 
     @ManyToMany
     @JoinTable(name = "user_favorite_ads",
-            joinColumns = @JoinColumn(name = "person_id"),
-    inverseJoinColumns = @JoinColumn(name = "ad_id"))
+            joinColumns = @JoinColumn(name = "favorite_id"),
+    inverseJoinColumns = @JoinColumn(name = "favorite_ad_id"))
     private List<Ad> favorites = new ArrayList<>();
 
     public void addToFavorites(Ad ad) {

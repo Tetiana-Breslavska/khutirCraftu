@@ -34,15 +34,7 @@ public class PersonService {
     }
 
     public List<Person> findAll() {
-        return personRepository.findAll().stream()
-                .filter(person -> "ROLE_USER".equals(person.getRole()))
-                .collect(Collectors.toList());
-    }
-
-    public List<Person> findAllSellers() {
-        return findAll().stream()
-                .filter(person -> "ROLE_SELLER".equals(person.getRole()))
-                .collect(Collectors.toList());
+        return personRepository.findAll();
     }
 
     @Transactional

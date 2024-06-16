@@ -10,6 +10,9 @@ import java.util.Date;
 
 /**
  * @author uriiponomarenko 27.05.2024
+ * *
+ *  * This class represents an advertisement entity in the database.
+ *
  */
 @Entity
 @Data
@@ -18,7 +21,6 @@ public class Ad {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    @Column(name = "ad_id")
     private Long ad_id;
 
     @Column(name = "ad_name")
