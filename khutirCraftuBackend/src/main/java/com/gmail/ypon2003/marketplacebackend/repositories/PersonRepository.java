@@ -4,7 +4,7 @@ import com.gmail.ypon2003.marketplacebackend.models.Person;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import java.util.Optional;
 
 /**
  * @author uriiponomarenko 28.05.2024
@@ -12,4 +12,6 @@ import java.util.List;
 @Repository
 public interface PersonRepository extends JpaRepository<Person, Long> {
 
+    Person findByEmail(String email);
+    Optional<Person> findPersonByPerson_id(long id);
 }

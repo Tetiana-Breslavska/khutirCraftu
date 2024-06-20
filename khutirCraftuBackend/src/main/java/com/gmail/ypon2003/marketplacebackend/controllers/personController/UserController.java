@@ -1,13 +1,16 @@
 package com.gmail.ypon2003.marketplacebackend.controllers.personController;
 
-import com.gmail.ypon2003.marketplacebackend.models.Ad;
+import com.gmail.ypon2003.marketplacebackend.models.Product;
 import com.gmail.ypon2003.marketplacebackend.models.Person;
+import com.gmail.ypon2003.marketplacebackend.repositories.PersonRepository;
 import com.gmail.ypon2003.marketplacebackend.services.PersonService;
 import jakarta.validation.Valid;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.data.crossstore.ChangeSetPersister;
+import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
+import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
@@ -18,44 +21,57 @@ import java.util.stream.Collectors;
  */
 @RestController
 @RequestMapping("/api/user")
-public class UserController extends BaseController<Person>{
+public class UserController {
 
     private static final Logger log = LoggerFactory.getLogger(Person.class);
     private final PersonService userService;
+    private final PasswordEncoder passwordEncoder;
+    private final PersonRepository personRepository;
 
-    public UserController(PersonService userService) {
-        super(userService);
+    public UserController(PersonService userService, PasswordEncoder passwordEncoder, PersonRepository personRepository) {
         this.userService = userService;
+        this.passwordEncoder = passwordEncoder;
+        this.personRepository = personRepository;
     }
 
     @GetMapping
-    @Override
     public List<Person> getAll() {
-        return super.getAll()
+        return userService.findAll()
                 .stream().filter(person -> "ROLE_USER".equals(person.getRole()))
                 .collect(Collectors.toList());
     }
 
-    @Override
     @PutMapping("{id}")
-    public void update(Long id, Person entity) {
-        super.update(id, entity);
+    public void update(@PathVariable Long id,@RequestBody @Valid Person entity) {
+        userService.update(id, entity);
     }
 
-    @Override
+    @PutMapping("/{id}/role")
+    public ResponseEntity<?> updateRole(@PathVariable Long id, @RequestParam String role) {
+        try {
+            Person person = personRepository.findById(id).orElseThrow(() -> new RuntimeException("User not found"));
+            person.setRole(role);
+            personRepository.save(person);
+            return new ResponseEntity<>("Role updated successfully", HttpStatus.OK);
+        } catch (Exception e) {
+            return new ResponseEntity<>(e.getMessage(), HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+    }
+
+
     @DeleteMapping("{id}")
     public void delete(Long id) {
-        super.delete(id);
+        userService.delete(id);
     }
 
-    @PostMapping("/add_user")
-    public Person addUser(@Valid @RequestBody Person user) {
-        user.setEmail(user.getEmail());
-        user.setPassword(user.getPassword());
-        user.setRole("ROLE_USER");
-
-        return userService.createPerson(user);
-    }
+//    @PostMapping("/add_user")
+//    public Person addUser(@Valid @RequestBody Person user) {
+//        user.setEmail(user.getEmail());
+//        user.setPassword(user.getPassword());
+//        user.setRole("ROLE_USER");
+//
+//        return userService.createPerson(user);
+//    }
 
     @PostMapping("/{personId}/favorites/{adId}")
     public ResponseEntity<Void> addToFavorites(@PathVariable("personId") Long personId,
@@ -72,8 +88,8 @@ public class UserController extends BaseController<Person>{
     }
 
     @GetMapping("/{personId}/favorites")
-    public ResponseEntity<List<Ad>> getFavorites(@PathVariable("personId") Long personId) throws ChangeSetPersister.NotFoundException {
-        List<Ad> favorites = userService.getFavorites(personId);
+    public ResponseEntity<List<Product>> getFavorites(@PathVariable("personId") Long personId) throws ChangeSetPersister.NotFoundException {
+        List<Product> favorites = userService.getFavorites(personId);
         return ResponseEntity.ok(favorites);
     }
 }

@@ -3,8 +3,10 @@ package com.gmail.ypon2003.marketplacebackend.models;
 import jakarta.persistence.*;
 import jakarta.validation.constraints.*;
 import lombok.Data;
+import org.springframework.security.core.GrantedAuthority;
 
 import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 /**
  * @author uriiponomarenko 27.05.2024
@@ -26,7 +28,7 @@ public class Person {
     private String lastName;
 
     @Column(name = "person_email")
-    @NotEmpty
+    //@NotEmpty
     @Email(regexp = "^[\\w-\\.]+@([\\w-]+\\.)+[\\w-]{2,}$")
     private String email;
 
@@ -35,7 +37,7 @@ public class Person {
     private String phoneNumber;
 
     @Column(name = "person_password")
-    @NotNull
+    //@NotNull
     @Size(min = 6, max = 100)
     private String password;
 
@@ -46,15 +48,19 @@ public class Person {
     @JoinTable(name = "user_favorite_ads",
             joinColumns = @JoinColumn(name = "favorite_id"),
     inverseJoinColumns = @JoinColumn(name = "favorite_ad_id"))
-    private List<Ad> favorites = new ArrayList<>();
+    private List<Product> favorites = new ArrayList<>();
 
-    public void addToFavorites(Ad ad) {
-        if(!favorites.contains(ad)) {
-            favorites.add(ad);
+    public void addToFavorites(Product product) {
+        if(!favorites.contains(product)) {
+            favorites.add(product);
         }
     }
 
-    public void removeFromFavorites(Ad ad) {
-        favorites.remove(ad);
+    public void removeFromFavorites(Product product) {
+        favorites.remove(product);
+    }
+
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return null;//TODO dev future
     }
 }
